@@ -33,6 +33,22 @@ options:
     state: enabled
 
 blocks:
+- name: bandwidth
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: ''
+    label: ''
+    type: int
+    value: '250000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [632, 12.0]
+    rotation: 0
+    state: true
 - name: center_freq
   id: variable_qtgui_label
   parameters:
@@ -41,7 +57,7 @@ blocks:
     gui_hint: ''
     label: ''
     type: real
-    value: '940800000'
+    value: '100700000'
   states:
     bus_sink: false
     bus_source: false
@@ -49,11 +65,27 @@ blocks:
     coordinate: [312, 12.0]
     rotation: 0
     state: true
+- name: fft_size
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: ''
+    label: ''
+    type: int
+    value: '524288'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 12.0]
+    rotation: 0
+    state: true
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '2048000'
+    value: '61400000'
   states:
     bus_sink: false
     bus_source: false
@@ -69,7 +101,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    vlen: '1024'
+    vlen: fft_size
   states:
     bus_sink: false
     bus_source: false
@@ -77,6 +109,42 @@ blocks:
     coordinate: [1240, 396.0]
     rotation: 180
     state: true
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/donny/phase_array/IQ_recordings/bladerf_sync0
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 108.0]
+    rotation: 0
+    state: disabled
+- name: blocks_file_sink_0_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/donny/phase_array/IQ_recordings/bladerf_sync1
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 524.0]
+    rotation: 0
+    state: disabled
 - name: blocks_multiply_conjugate_cc_0
   id: blocks_multiply_conjugate_cc
   parameters:
@@ -85,7 +153,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    vlen: '1024'
+    vlen: fft_size
   states:
     bus_sink: false
     bus_source: false
@@ -101,7 +169,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_items: '1024'
+    num_items: fft_size
     type: complex
     vlen: '1'
   states:
@@ -119,7 +187,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_items: '1024'
+    num_items: fft_size
     type: complex
     vlen: '1'
   states:
@@ -135,14 +203,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '1024'
+    fft_size: fft_size
     forward: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    nthreads: '1'
+    nthreads: '2'
     shift: 'True'
     type: complex
-    window: window.blackmanharris(1024)
+    window: window.blackmanharris(fft_size)
   states:
     bus_sink: false
     bus_source: false
@@ -156,14 +224,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '1024'
+    fft_size: fft_size
     forward: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    nthreads: '1'
+    nthreads: '2'
     shift: 'True'
     type: complex
-    window: window.blackmanharris(1024)
+    window: window.blackmanharris(fft_size)
   states:
     bus_sink: false
     bus_source: false
@@ -177,14 +245,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '1024'
+    fft_size: fft_size
     forward: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     nthreads: '1'
     shift: 'False'
     type: complex
-    window: window.blackmanharris(1024)
+    window: window.blackmanharris(fft_size)
   states:
     bus_sink: false
     bus_source: false
@@ -192,81 +260,8 @@ blocks:
     coordinate: [1200, 180.0]
     rotation: 0
     state: true
-- name: qtgui_vector_sink_f_0
-  id: qtgui_vector_sink_f
-  parameters:
-    affinity: ''
-    alias: ''
-    alpha1: '1.0'
-    alpha10: '1.0'
-    alpha2: '1.0'
-    alpha3: '1.0'
-    alpha4: '1.0'
-    alpha5: '1.0'
-    alpha6: '1.0'
-    alpha7: '1.0'
-    alpha8: '1.0'
-    alpha9: '1.0'
-    autoscale: 'False'
-    average: '1.0'
-    color1: '"blue"'
-    color10: '"dark blue"'
-    color2: '"red"'
-    color3: '"green"'
-    color4: '"black"'
-    color5: '"cyan"'
-    color6: '"magenta"'
-    color7: '"yellow"'
-    color8: '"dark red"'
-    color9: '"dark green"'
-    comment: ''
-    grid: 'False'
-    gui_hint: ''
-    label1: ''
-    label10: ''
-    label2: ''
-    label3: ''
-    label4: ''
-    label5: ''
-    label6: ''
-    label7: ''
-    label8: ''
-    label9: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    name: '""'
-    nconnections: '1'
-    ref_level: '0'
-    showports: 'False'
-    update_time: '0.001'
-    vlen: '1024'
-    width1: '1'
-    width10: '1'
-    width2: '1'
-    width3: '1'
-    width4: '1'
-    width5: '1'
-    width6: '1'
-    width7: '1'
-    width8: '1'
-    width9: '1'
-    x_axis_label: '"x-Axis"'
-    x_start: '0'
-    x_step: '1.0'
-    x_units: '""'
-    y_axis_label: '"y-Axis"'
-    y_units: '""'
-    ymax: '50'
-    ymin: '-50'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [944, 372.0]
-    rotation: 180
-    state: true
-- name: rtlsdr_source_0
-  id: rtlsdr_source
+- name: osmosdr_source_0
+  id: osmosdr_source
   parameters:
     affinity: ''
     alias: ''
@@ -302,7 +297,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    args: '"rtl=0"'
+    args: bladerf=0
     bb_gain0: '20'
     bb_gain1: '20'
     bb_gain10: '20'
@@ -335,7 +330,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: '0'
+    bw0: bandwidth
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -619,11 +614,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 116.0]
+    coordinate: [120, 100.0]
     rotation: 0
     state: true
-- name: rtlsdr_source_1
-  id: rtlsdr_source
+- name: osmosdr_source_0_0
+  id: osmosdr_source
   parameters:
     affinity: ''
     alias: ''
@@ -659,7 +654,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    args: '"rtl=1"'
+    args: bladerf=1
     bb_gain0: '20'
     bb_gain1: '20'
     bb_gain10: '20'
@@ -692,7 +687,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: '0'
+    bw0: bandwidth
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -979,6 +974,79 @@ blocks:
     coordinate: [120, 372.0]
     rotation: 0
     state: true
+- name: qtgui_vector_sink_f_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: ''
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.001'
+    vlen: fft_size
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: '-250000'
+    x_step: '1.0'
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '50'
+    ymin: '-50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 372.0]
+    rotation: 180
+    state: true
 
 connections:
 - [blocks_complex_to_mag_0, '0', qtgui_vector_sink_f_0, '0']
@@ -988,8 +1056,10 @@ connections:
 - [fft_vxx_0, '0', blocks_multiply_conjugate_cc_0, '0']
 - [fft_vxx_1, '0', blocks_multiply_conjugate_cc_0, '1']
 - [fft_vxx_2, '0', blocks_complex_to_mag_0, '0']
-- [rtlsdr_source_0, '0', blocks_stream_to_vector_0, '0']
-- [rtlsdr_source_1, '0', blocks_stream_to_vector_1, '0']
+- [osmosdr_source_0, '0', blocks_file_sink_0, '0']
+- [osmosdr_source_0, '0', blocks_stream_to_vector_0, '0']
+- [osmosdr_source_0_0, '0', blocks_file_sink_0_0, '0']
+- [osmosdr_source_0_0, '0', blocks_stream_to_vector_1, '0']
 
 metadata:
   file_format: 1

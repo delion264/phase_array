@@ -6,7 +6,7 @@
 #
 # GNU Radio Python Flow Graph
 # Title: cross-correlation
-# GNU Radio version: 3.10.2.0
+# GNU Radio version: 3.10.1.1
 
 from packaging.version import Version as StrictVersion
 
@@ -23,12 +23,12 @@ if __name__ == '__main__':
 from PyQt5 import Qt
 from gnuradio import eng_notation
 from gnuradio import qtgui
+from gnuradio.filter import firdes
 import sip
 from gnuradio import blocks
 from gnuradio import fft
 from gnuradio.fft import window
 from gnuradio import gr
-from gnuradio.filter import firdes
 import sys
 import signal
 from argparse import ArgumentParser
@@ -76,113 +76,126 @@ class default(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 2048000
-        self.center_freq = center_freq = 900e6
+        self.samp_rate = samp_rate = 40000000
+        self.fft_size = fft_size = 524288
+        self.center_freq = center_freq = 937600000
+        self.bandwidth = bandwidth = 50000
 
         ##################################################
         # Blocks
         ##################################################
+        self._fft_size_tool_bar = Qt.QToolBar(self)
+
+        if None:
+            self._fft_size_formatter = None
+        else:
+            self._fft_size_formatter = lambda x: str(x)
+
+        self._fft_size_tool_bar.addWidget(Qt.QLabel("'fft_size'"))
+        self._fft_size_label = Qt.QLabel(str(self._fft_size_formatter(self.fft_size)))
+        self._fft_size_tool_bar.addWidget(self._fft_size_label)
+        self.top_layout.addWidget(self._fft_size_tool_bar)
         self._center_freq_tool_bar = Qt.QToolBar(self)
 
         if None:
             self._center_freq_formatter = None
         else:
-            self._center_freq_formatter = lambda x: eng_notation.num_to_str(x)
+            self._center_freq_formatter = lambda x: str(x)
 
         self._center_freq_tool_bar.addWidget(Qt.QLabel("'center_freq'"))
         self._center_freq_label = Qt.QLabel(str(self._center_freq_formatter(self.center_freq)))
         self._center_freq_tool_bar.addWidget(self._center_freq_label)
         self.top_layout.addWidget(self._center_freq_tool_bar)
-        self.rtlsdr_source_1 = osmosdr.source(
-            args="numchan=" + str(1) + " " + "rtl=1"
-        )
-        self.rtlsdr_source_1.set_time_unknown_pps(osmosdr.time_spec_t())
-        self.rtlsdr_source_1.set_sample_rate(samp_rate)
-        self.rtlsdr_source_1.set_center_freq(center_freq, 0)
-        self.rtlsdr_source_1.set_freq_corr(0, 0)
-        self.rtlsdr_source_1.set_dc_offset_mode(0, 0)
-        self.rtlsdr_source_1.set_iq_balance_mode(0, 0)
-        self.rtlsdr_source_1.set_gain_mode(False, 0)
-        self.rtlsdr_source_1.set_gain(10, 0)
-        self.rtlsdr_source_1.set_if_gain(20, 0)
-        self.rtlsdr_source_1.set_bb_gain(20, 0)
-        self.rtlsdr_source_1.set_antenna('', 0)
-        self.rtlsdr_source_1.set_bandwidth(0, 0)
-        self.rtlsdr_source_0 = osmosdr.source(
-            args="numchan=" + str(1) + " " + "rtl=0"
-        )
-        self.rtlsdr_source_0.set_time_unknown_pps(osmosdr.time_spec_t())
-        self.rtlsdr_source_0.set_sample_rate(samp_rate)
-        self.rtlsdr_source_0.set_center_freq(center_freq, 0)
-        self.rtlsdr_source_0.set_freq_corr(0, 0)
-        self.rtlsdr_source_0.set_dc_offset_mode(0, 0)
-        self.rtlsdr_source_0.set_iq_balance_mode(0, 0)
-        self.rtlsdr_source_0.set_gain_mode(False, 0)
-        self.rtlsdr_source_0.set_gain(10, 0)
-        self.rtlsdr_source_0.set_if_gain(20, 0)
-        self.rtlsdr_source_0.set_bb_gain(20, 0)
-        self.rtlsdr_source_0.set_antenna('', 0)
-        self.rtlsdr_source_0.set_bandwidth(0, 0)
-        self.qtgui_vector_sink_f_0 = qtgui.vector_sink_f(
-            1024,
-            0,
-            1.0,
-            "x-Axis",
-            "y-Axis",
-            "",
-            1, # Number of inputs
+        self._bandwidth_tool_bar = Qt.QToolBar(self)
+
+        if None:
+            self._bandwidth_formatter = None
+        else:
+            self._bandwidth_formatter = lambda x: str(x)
+
+        self._bandwidth_tool_bar.addWidget(Qt.QLabel("'bandwidth'"))
+        self._bandwidth_label = Qt.QLabel(str(self._bandwidth_formatter(self.bandwidth)))
+        self._bandwidth_tool_bar.addWidget(self._bandwidth_label)
+        self.top_layout.addWidget(self._bandwidth_tool_bar)
+        self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
+            32768, #size
+            window.WIN_BLACKMAN_hARRIS, #wintype
+            0, #fc
+            32000, #bw
+            "", #name
+            1, #number of inputs
             None # parent
         )
-        self.qtgui_vector_sink_f_0.set_update_time(0.10)
-        self.qtgui_vector_sink_f_0.set_y_axis(-50, 50)
-        self.qtgui_vector_sink_f_0.enable_autoscale(False)
-        self.qtgui_vector_sink_f_0.enable_grid(False)
-        self.qtgui_vector_sink_f_0.set_x_axis_units("")
-        self.qtgui_vector_sink_f_0.set_y_axis_units("")
-        self.qtgui_vector_sink_f_0.set_ref_level(0)
+        self.qtgui_waterfall_sink_x_0.set_update_time(0.05)
+        self.qtgui_waterfall_sink_x_0.enable_grid(False)
+        self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
+
 
 
         labels = ['', '', '', '', '',
-            '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-            "magenta", "yellow", "dark red", "dark green", "dark blue"]
+                  '', '', '', '', '']
+        colors = [1, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-            1.0, 1.0, 1.0, 1.0, 1.0]
+                  1.0, 1.0, 1.0, 1.0, 1.0]
 
         for i in range(1):
             if len(labels[i]) == 0:
-                self.qtgui_vector_sink_f_0.set_line_label(i, "Data {0}".format(i))
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, "Data {0}".format(i))
             else:
-                self.qtgui_vector_sink_f_0.set_line_label(i, labels[i])
-            self.qtgui_vector_sink_f_0.set_line_width(i, widths[i])
-            self.qtgui_vector_sink_f_0.set_line_color(i, colors[i])
-            self.qtgui_vector_sink_f_0.set_line_alpha(i, alphas[i])
+                self.qtgui_waterfall_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_waterfall_sink_x_0.set_color_map(i, colors[i])
+            self.qtgui_waterfall_sink_x_0.set_line_alpha(i, alphas[i])
 
-        self._qtgui_vector_sink_f_0_win = sip.wrapinstance(self.qtgui_vector_sink_f_0.qwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_vector_sink_f_0_win)
-        self.fft_vxx_2 = fft.fft_vcc(1024, False, window.blackmanharris(1024), False, 1)
-        self.fft_vxx_1 = fft.fft_vcc(1024, True, window.blackmanharris(1024), True, 1)
-        self.fft_vxx_0 = fft.fft_vcc(1024, True, window.blackmanharris(1024), True, 1)
-        self.blocks_stream_to_vector_1 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, 1024)
-        self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, 1024)
-        self.blocks_multiply_conjugate_cc_0 = blocks.multiply_conjugate_cc(1024)
-        self.blocks_complex_to_mag_0 = blocks.complex_to_mag(1024)
+        self.qtgui_waterfall_sink_x_0.set_intensity_range(-200, 200)
+
+        self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.qwidget(), Qt.QWidget)
+
+        self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
+        self.osmosdr_source_0 = osmosdr.source(
+            args="numchan=" + str(2) + " " + "bladerf=0,nchan=2"
+        )
+        self.osmosdr_source_0.set_time_unknown_pps(osmosdr.time_spec_t())
+        self.osmosdr_source_0.set_sample_rate(samp_rate)
+        self.osmosdr_source_0.set_center_freq(center_freq, 0)
+        self.osmosdr_source_0.set_freq_corr(0, 0)
+        self.osmosdr_source_0.set_dc_offset_mode(0, 0)
+        self.osmosdr_source_0.set_iq_balance_mode(0, 0)
+        self.osmosdr_source_0.set_gain_mode(False, 0)
+        self.osmosdr_source_0.set_gain(10, 0)
+        self.osmosdr_source_0.set_if_gain(20, 0)
+        self.osmosdr_source_0.set_bb_gain(20, 0)
+        self.osmosdr_source_0.set_antenna('', 0)
+        self.osmosdr_source_0.set_bandwidth(bandwidth, 0)
+        self.osmosdr_source_0.set_center_freq(100e6, 1)
+        self.osmosdr_source_0.set_freq_corr(0, 1)
+        self.osmosdr_source_0.set_dc_offset_mode(0, 1)
+        self.osmosdr_source_0.set_iq_balance_mode(0, 1)
+        self.osmosdr_source_0.set_gain_mode(False, 1)
+        self.osmosdr_source_0.set_gain(10, 1)
+        self.osmosdr_source_0.set_if_gain(20, 1)
+        self.osmosdr_source_0.set_bb_gain(20, 1)
+        self.osmosdr_source_0.set_antenna('', 1)
+        self.osmosdr_source_0.set_bandwidth(0, 1)
+        self.fft_vxx_1 = fft.fft_vcc(fft_size, True, window.blackmanharris(fft_size), True, 2)
+        self.fft_vxx_0 = fft.fft_vcc(fft_size, True, window.blackmanharris(fft_size), True, 2)
+        self.blocks_vector_to_stream_0 = blocks.vector_to_stream(gr.sizeof_gr_complex*1, fft_size)
+        self.blocks_stream_to_vector_1 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, fft_size)
+        self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, fft_size)
+        self.blocks_multiply_conjugate_cc_0 = blocks.multiply_conjugate_cc(fft_size)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_complex_to_mag_0, 0), (self.qtgui_vector_sink_f_0, 0))
-        self.connect((self.blocks_multiply_conjugate_cc_0, 0), (self.fft_vxx_2, 0))
+        self.connect((self.blocks_multiply_conjugate_cc_0, 0), (self.blocks_vector_to_stream_0, 0))
         self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
         self.connect((self.blocks_stream_to_vector_1, 0), (self.fft_vxx_1, 0))
+        self.connect((self.blocks_vector_to_stream_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
         self.connect((self.fft_vxx_0, 0), (self.blocks_multiply_conjugate_cc_0, 0))
         self.connect((self.fft_vxx_1, 0), (self.blocks_multiply_conjugate_cc_0, 1))
-        self.connect((self.fft_vxx_2, 0), (self.blocks_complex_to_mag_0, 0))
-        self.connect((self.rtlsdr_source_0, 0), (self.blocks_stream_to_vector_0, 0))
-        self.connect((self.rtlsdr_source_1, 0), (self.blocks_stream_to_vector_1, 0))
+        self.connect((self.osmosdr_source_0, 0), (self.blocks_stream_to_vector_0, 0))
+        self.connect((self.osmosdr_source_0, 1), (self.blocks_stream_to_vector_1, 0))
 
 
     def closeEvent(self, event):
@@ -198,8 +211,14 @@ class default(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
-        self.rtlsdr_source_1.set_sample_rate(self.samp_rate)
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+
+    def get_fft_size(self):
+        return self.fft_size
+
+    def set_fft_size(self, fft_size):
+        self.fft_size = fft_size
+        Qt.QMetaObject.invokeMethod(self._fft_size_label, "setText", Qt.Q_ARG("QString", str(self._fft_size_formatter(self.fft_size))))
 
     def get_center_freq(self):
         return self.center_freq
@@ -207,8 +226,15 @@ class default(gr.top_block, Qt.QWidget):
     def set_center_freq(self, center_freq):
         self.center_freq = center_freq
         Qt.QMetaObject.invokeMethod(self._center_freq_label, "setText", Qt.Q_ARG("QString", str(self._center_freq_formatter(self.center_freq))))
-        self.rtlsdr_source_0.set_center_freq(self.center_freq, 0)
-        self.rtlsdr_source_1.set_center_freq(self.center_freq, 0)
+        self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
+
+    def get_bandwidth(self):
+        return self.bandwidth
+
+    def set_bandwidth(self, bandwidth):
+        self.bandwidth = bandwidth
+        Qt.QMetaObject.invokeMethod(self._bandwidth_label, "setText", Qt.Q_ARG("QString", str(self._bandwidth_formatter(self.bandwidth))))
+        self.osmosdr_source_0.set_bandwidth(self.bandwidth, 0)
 
 
 

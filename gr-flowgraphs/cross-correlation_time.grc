@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: cross-correlation
+    title: cross-correlation_time
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -41,7 +41,7 @@ blocks:
     gui_hint: ''
     label: ''
     type: real
-    value: '940800000'
+    value: '100700000'
   states:
     bus_sink: false
     bus_source: false
@@ -74,8 +74,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1240, 396.0]
-    rotation: 180
+    coordinate: [888, 220.0]
+    rotation: 0
     state: true
 - name: blocks_multiply_conjugate_cc_0
   id: blocks_multiply_conjugate_cc
@@ -90,7 +90,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [936, 200.0]
+    coordinate: [656, 208.0]
     rotation: 0
     state: true
 - name: blocks_stream_to_vector_0
@@ -108,7 +108,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 264.0]
+    coordinate: [432, 208.0]
     rotation: 0
     state: true
 - name: blocks_stream_to_vector_1
@@ -126,70 +126,169 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 392.0]
+    coordinate: [432, 344.0]
     rotation: 0
     state: true
-- name: fft_vxx_0
-  id: fft_vxx
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
   parameters:
     affinity: ''
     alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
     comment: ''
-    fft_size: '1024'
-    forward: 'True'
+    ctrlpanel: 'False'
+    fc: center_freq
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    nthreads: '1'
-    shift: 'True'
+    name: '""'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
     type: complex
-    window: window.blackmanharris(1024)
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 164.0]
+    coordinate: [432, 548.0]
     rotation: 0
     state: true
-- name: fft_vxx_1
-  id: fft_vxx
+- name: qtgui_freq_sink_x_0_0
+  id: qtgui_freq_sink_x
   parameters:
     affinity: ''
     alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
     comment: ''
-    fft_size: '1024'
-    forward: 'True'
+    ctrlpanel: 'False'
+    fc: center_freq
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    nthreads: '1'
-    shift: 'True'
+    name: '""'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
     type: complex
-    window: window.blackmanharris(1024)
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 420.0]
-    rotation: 0
-    state: true
-- name: fft_vxx_2
-  id: fft_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    fft_size: '1024'
-    forward: 'False'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    nthreads: '1'
-    shift: 'False'
-    type: complex
-    window: window.blackmanharris(1024)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1200, 180.0]
+    coordinate: [432, 100.0]
     rotation: 0
     state: true
 - name: qtgui_vector_sink_f_0
@@ -238,7 +337,7 @@ blocks:
     nconnections: '1'
     ref_level: '0'
     showports: 'False'
-    update_time: '0.001'
+    update_time: '0.01'
     vlen: '1024'
     width1: '1'
     width10: '1'
@@ -262,8 +361,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [944, 372.0]
-    rotation: 180
+    coordinate: [1152, 196.0]
+    rotation: 0
     state: true
 - name: rtlsdr_source_0
   id: rtlsdr_source
@@ -335,7 +434,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: '0'
+    bw0: '150000'
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -367,7 +466,7 @@ blocks:
     bw7: '0'
     bw8: '0'
     bw9: '0'
-    clock_source0: ''
+    clock_source0: internal
     clock_source1: ''
     clock_source2: ''
     clock_source3: ''
@@ -504,7 +603,7 @@ blocks:
     gain7: '10'
     gain8: '10'
     gain9: '10'
-    gain_mode0: 'False'
+    gain_mode0: 'True'
     gain_mode1: 'False'
     gain_mode10: 'False'
     gain_mode11: 'False'
@@ -568,7 +667,7 @@ blocks:
     if_gain7: '20'
     if_gain8: '20'
     if_gain9: '20'
-    iq_balance_mode0: '0'
+    iq_balance_mode0: '2'
     iq_balance_mode1: '0'
     iq_balance_mode10: '0'
     iq_balance_mode11: '0'
@@ -692,7 +791,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: '0'
+    bw0: '150000'
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -724,7 +823,7 @@ blocks:
     bw7: '0'
     bw8: '0'
     bw9: '0'
-    clock_source0: ''
+    clock_source0: external
     clock_source1: ''
     clock_source2: ''
     clock_source3: ''
@@ -861,7 +960,7 @@ blocks:
     gain7: '10'
     gain8: '10'
     gain9: '10'
-    gain_mode0: 'False'
+    gain_mode0: 'True'
     gain_mode1: 'False'
     gain_mode10: 'False'
     gain_mode11: 'False'
@@ -925,7 +1024,7 @@ blocks:
     if_gain7: '20'
     if_gain8: '20'
     if_gain9: '20'
-    iq_balance_mode0: '0'
+    iq_balance_mode0: '2'
     iq_balance_mode1: '0'
     iq_balance_mode10: '0'
     iq_balance_mode11: '0'
@@ -982,14 +1081,13 @@ blocks:
 
 connections:
 - [blocks_complex_to_mag_0, '0', qtgui_vector_sink_f_0, '0']
-- [blocks_multiply_conjugate_cc_0, '0', fft_vxx_2, '0']
-- [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
-- [blocks_stream_to_vector_1, '0', fft_vxx_1, '0']
-- [fft_vxx_0, '0', blocks_multiply_conjugate_cc_0, '0']
-- [fft_vxx_1, '0', blocks_multiply_conjugate_cc_0, '1']
-- [fft_vxx_2, '0', blocks_complex_to_mag_0, '0']
+- [blocks_multiply_conjugate_cc_0, '0', blocks_complex_to_mag_0, '0']
+- [blocks_stream_to_vector_0, '0', blocks_multiply_conjugate_cc_0, '0']
+- [blocks_stream_to_vector_1, '0', blocks_multiply_conjugate_cc_0, '1']
 - [rtlsdr_source_0, '0', blocks_stream_to_vector_0, '0']
+- [rtlsdr_source_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [rtlsdr_source_1, '0', blocks_stream_to_vector_1, '0']
+- [rtlsdr_source_1, '0', qtgui_freq_sink_x_0, '0']
 
 metadata:
   file_format: 1
