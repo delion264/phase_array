@@ -50,7 +50,7 @@ void AntElm::setPhase(double az, double el, int wavelength) {
 /* Divide and conquer method to avoid nested loops. Implementation needs to be checked. */
 void Array::steerArray(int xmin, int xmax, int ymin, int ymax, double az, double el, int wavelength) {
     if(xmin<xmax) {
-        steerArray(0,(xmax-xmin)/2,0,(ymax-ymin)/2,az,el,wavelength);
+        steerArray(xmin,(xmax-xmin)/2,ymin,(ymax-ymin)/2,az,el,wavelength);
         steerArray((xmax-xmin)/2+1,xmax,(ymax-ymin)/2+1,ymax,az,el,wavelength);
     } else {
         self.Elm[xmin][ymin].setPhase(az,el,wavelength);
