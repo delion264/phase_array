@@ -1,9 +1,11 @@
+#define TRUE 1
+
 class WaveVector {
     public:
         double az;
         double el;
-        double phase;   /* in rads */
-        int wavelength; /* in Hertz */
+        double phase_offset;    /* in radians */
+        int wavelength;         /* in Hertz */
 };
 
 class AntElm {
@@ -12,48 +14,46 @@ class AntElm {
         int col;
         WaveVector w;
         bool lock;      /* indicates if array element is in use */
-
-        void setPhase(double az, double el, int wavelength);
+        void setPhase(int row, int col, double az, double el, int wavelength);
 };
 
 class Array {
     public:
-        void steerArray();
-        void setWavelength();
-        AntElm *Elms[][];   /* Array of antenna elements */
+        AntElm Elms[][];   /* Array of antenna elements */
+        void steerArray(int xmin, int xmax, int ymin, int ymax, double az, double el, int wavelength);
+        void windowFn();
 };
 
-class SubArray : public Array {
+class URArray : public Array {
     /* Implements Uniform Rectangular subarray */
 };
 
 /*  
-    Calculates phase offset applied to antenna element (p,q) given 
+    Calculates phase offset applied to antenna element (p,q) === (row,col) given 
     a transmit direction or DoA in spherical coordinates (az,el) === (φ,θ) 
-    and the transmit wavelength λ.
+    and the signal wavelength λ.
     Actual phase offset is given by ψ = (-2*π*(p-1)*d/λ)*u
     E-field contribution is given by taking exp(i*ψ).
 */
-void AntElm::setPhase(double az, double el, int wavelength) {
-    int p = self.row;
-    int q = self.col;
+void AntElm::setPhase(int row, int col, double az, double el, int wavelength) {
     double u, v, wx, wy, s_phase;
-
     u = sin(el)*cos(az);
     v = sin(el)*sin(az);
-    wx = -2*pi*i*(p - 1)*d/wavelength*u;
-    wy = -2*pi*i*(q - 1)*d/wavelength*v;
-
-    self.phase = wx + wy;                  /* Steering phase */
+    wx = -2*pi*i*(row - 1)*d/wavelength*u;
+    wy = -2*pi*i*(col - 1)*d/wavelength*v;
+    (*this).phase_offset = wx + wy;                  /* Steering phase */
 }
 
-/* Divide and conquer method to avoid nested loops. Implementation needs to be checked. */
+/*  Divide and conquer method to avoid nested loops. Implementation needs to be checked.
+    Correct usage of (*this)?
+ */
 void Array::steerArray(int xmin, int xmax, int ymin, int ymax, double az, double el, int wavelength) {
     if(xmin<xmax) {
         steerArray(xmin,(xmax-xmin)/2,ymin,(ymax-ymin)/2,az,el,wavelength);
         steerArray((xmax-xmin)/2+1,xmax,(ymax-ymin)/2+1,ymax,az,el,wavelength);
     } else {
-        self.Elm[xmin][ymin].setPhase(az,el,wavelength);
+        (*this).Elm[xmin][ymin].setPhase(xmin,ymin,az,el,wavelength);
+        (*this).Elm[xmin][ymin].lock = TRUE;
     }
 }
 
