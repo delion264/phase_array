@@ -44,9 +44,10 @@ void AntElm::setPhase(int row, int col, double az, double el, int wavelength) {
     (*this).phase_offset = wx + wy;                  /* Steering phase */
 }
 
-/*  Divide and conquer method to avoid nested loops. Implementation needs to be checked.
+/*  
+    Divide and conquer method to avoid nested loops. Implementation needs to be checked.
     Correct usage of (*this)?
- */
+*/
 void Array::steerArray(int xmin, int xmax, int ymin, int ymax, double az, double el, int wavelength) {
     if(xmin<xmax) {
         steerArray(xmin,(xmax-xmin)/2,ymin,(ymax-ymin)/2,az,el,wavelength);
@@ -63,8 +64,8 @@ void Array::steerArray(int xmin, int xmax, int ymin, int ymax, double az, double
     Potential approach:
 
     1) Calculate cross correlation of all elements with respect to a
-    reference signal to obtain phase differences across all antenna 
-    elements
+    reference signal to obtain phase differences for all antenna 
+    elements with respect to the reference signal.
 
     2) Use the above result to obtain a system of linear equations to 
     solve for φ and θ
