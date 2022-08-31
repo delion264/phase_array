@@ -12,12 +12,12 @@ class Array {
 	        (*this).Elm[xmin][ymin].w.setPhase(xmin,ymin,az,el,wavelength);
 	        (*this).Elm[xmin][ymin].lock = TRUE;
 	    }
-        }
+    }
 
 	void windowFn() {
 	    /* Gaussian */
 	    /* Hamming */
 	    /* Blackman-Harris */
-        }
+    }
 };
 
