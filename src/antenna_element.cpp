@@ -1,31 +1,41 @@
+#include <vector>
+
 #define TRUE 1
 
 class AntElm {
     public:
-        int row;
-        int col;
+        std::vector<int> elm_index(2);
         WaveVector w;
-        bool lock;      /* indicates if array element is in use */
+        bool lock;          /* indicates if array element is in use */
+        bool tr;            /* indicates if element is TX or RX */
 
-	/*  
-	    Calculates phase offset applied to antenna element (p,q) === (row,col) given 
-	    a transmit direction or DoA in spherical coordinates (az,el) === (φ,θ) 
-	    and the signal wavelength λ.
-	    Actual phase offset is given by ψ = (-2*π*(p-1)*d/λ)*u
-	    E-field contribution is given by taking exp(i*ψ).
-	*/
+        /*  
+            Calculates phase offset applied to antenna element (p,q) === (row,col) given 
+            a transmit direction or DoA in spherical coordinates (az,el) === (φ,θ) 
+            and the signal wavelength λ.
+            Actual phase offset is given by ψ = (-2*π*(p-1)*d/λ)*u
+            E-field contribution is given by taking exp(i*ψ).
+        */
         void setPhase(int row, int col, double az, double el, int wavelength) {
-	    double u, v, wx, wy, s_phase;
-	    u = sin(el)*cos(az);
-       	    v = sin(el)*sin(az);
-	    wx = -2*pi*i*(row - 1)*d/wavelength*u;
-	    wy = -2*pi*i*(col - 1)*d/wavelength*v;
-	    (*this).w.phase_offset = wx + wy;                  /* Steering phase */
+            double u, v, wx, wy, s_phase;
+            u = sin(el)*cos(az);
+            v = sin(el)*sin(az);
+            wx = -2*pi*i*(row - 1)*d/wavelength*u;
+            wy = -2*pi*i*(col - 1)*d/wavelength*v;
+            (*this).w.phase_offset = wx + wy;                  /* Steering phase */
         }
 
-	void addPhase() {
-	
-	}
+        void addPhase(double phase_addition) {
+            (*this).w.phase_offset = (*this).w.phase_offset + phase_addition
+        }
+
+        double relativePhase() {
+            /*  
+                Cross-correlation between signal at this element and reference signal;
+                return value is phase difference. Will possibly use KFRlib implementation
+                of FFT.
+            */
+        }
 };
 
 /*
